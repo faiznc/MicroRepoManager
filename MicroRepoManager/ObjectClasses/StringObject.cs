@@ -18,5 +18,10 @@
         public StringObject(string itemName, string itemContent, int itemType) : base(itemName, itemContent, itemType)
         {
         }
+
+        public string FungsiAsal()
+        {
+            return "String aja";
+        }
     }
 }
