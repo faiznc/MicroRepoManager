@@ -1,4 +1,4 @@
-﻿namespace MicroRepoManager
+﻿namespace MicroRepoManager.ObjectClasses
 {
     /// <summary>
     /// A class to store string object.

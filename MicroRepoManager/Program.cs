@@ -1,4 +1,5 @@
 ﻿using System;
+using MicroRepoManager.ObjectClasses;
 
 namespace MicroRepoManager
 {
@@ -7,6 +8,8 @@ namespace MicroRepoManager
         private const string Marker = "-----------------------------"; 
         private static void Main(string[] args)
         {
+            // todo class BARU untuk atur input / sebagai main menu nya
+            
             Console.WriteLine("Hello World!");
             
             StringObject data1 = new StringObject("1", "Content 1", 2);
