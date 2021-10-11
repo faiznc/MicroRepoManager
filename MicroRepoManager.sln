@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroRepoManager", "MicroRepoManager\MicroRepoManager.csproj", "{5CF8C51F-3370-4B86-B1F1-2AADD2A02A43}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroRepoManagerConsole", "..\MicroRepoManagerConsole\MicroRepoManagerConsole.csproj", "{899C8664-F065-4CCA-B845-7E7BB7DC0B53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{5CF8C51F-3370-4B86-B1F1-2AADD2A02A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CF8C51F-3370-4B86-B1F1-2AADD2A02A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CF8C51F-3370-4B86-B1F1-2AADD2A02A43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{899C8664-F065-4CCA-B845-7E7BB7DC0B53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{899C8664-F065-4CCA-B845-7E7BB7DC0B53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{899C8664-F065-4CCA-B845-7E7BB7DC0B53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{899C8664-F065-4CCA-B845-7E7BB7DC0B53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

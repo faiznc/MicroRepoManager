@@ -1,21 +1,27 @@
-﻿namespace MicroRepoManager
+﻿using System;
+
+namespace MicroRepoManager.Objects
 {
+    /// <summary>
+    /// Base class for Objects in this repository.
+    /// </summary>
     public abstract class BaseObjectClass
     {
         private readonly string _itemName;
         private readonly string _itemContent;
-        private readonly int _itemType;
+        private readonly byte _itemType;
+        
         /// <summary>
         /// Base Class object initialization
         /// </summary>
         /// <param name="itemName"> Item's identifier (string)</param>
         /// <param name="itemContent">Item's content (string)</param>
         /// <param name="itemType">Item's type (int)</param>
-        public BaseObjectClass(string itemName, string itemContent, int itemType)
+        protected BaseObjectClass(string itemName, string itemContent, int itemType)
         {
             _itemName = itemName;
             _itemContent = itemContent;
-            _itemType = itemType;
+            _itemType = (byte) itemType;
         }
 
         /// <summary>
