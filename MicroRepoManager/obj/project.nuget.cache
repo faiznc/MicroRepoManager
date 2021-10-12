@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "wNpv/NmY8bB9Z4x4zBHWypM6+beUTPfMlzFxmAucpBZyxFmhdXWdift7zWPNMhtT9wjbmEkuRlq4lYSxzyw+GA==",
+  "dgSpecHash": "g9H/xccPsu/hrKcizCixHXYQbiZQo26q9/vfwAdpgVOlhEFIcaM9SKjCU9xlW0gL0okeGqQ/RvRgyF0igg/MKQ==",
   "success": true,
   "projectFilePath": "D:\\Training\\MicroRepoManager\\MicroRepoManager\\MicroRepoManager\\MicroRepoManager.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Formulatrix\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
   "logs": []
 }
