@@ -5,30 +5,52 @@ using Newtonsoft.Json.Linq;
 
 namespace MicroRepoManager
 {
-    // Future use...
-    public enum ValidityStatus
+    public enum ValidityStatus // Error code usage, not implemented yet...
     {
-        Valid=1,
-        Invalid=0,
-        Null=2
+        Valid=1, // Data is valid
+        Invalid=0, // Data is invalid
+        Null=2 // Data is null
     }
+    
     public static class Validator
     {
         /// <summary>
+        /// Main function to validate given string with its <see cref="ItemTypes"/>. <seealso cref="ItemTypes"/>
+        /// </summary>
+        /// <param name="dataInput">String to check</param>
+        /// <param name="type">Input data type.</param>
+        /// <returns></returns>
+        public static bool Validate(string dataInput, ItemTypes type)
+        {
+            var isValid = false;
+            switch (type)
+            {
+                case ItemTypes.Json:
+                    isValid = IsValidJson(dataInput);
+                    break;
+                case ItemTypes.Xml:
+                    isValid = IsValidXml(dataInput);
+                    break;
+            }
+            return isValid;
+        }
+        
+        
+        /// <summary>
         /// Check whether a string is a valid json
         /// </summary>
-        /// <param name="strInput">string to check</param>
-        /// <returns>true if string is valid, otherwise false.</returns>
-        public static bool IsValidJson(string strInput)
+        /// <param name="jsonInput">string to check</param>
+        /// <returns>true if string is valid json, otherwise false.</returns>
+        private static bool IsValidJson(string jsonInput)
             {
-            if (string.IsNullOrWhiteSpace(strInput)) { return false;}
-            strInput = strInput.Trim();
-            if ((strInput.StartsWith("{") && strInput.EndsWith("}")) || //For object
-                (strInput.StartsWith("[") && strInput.EndsWith("]"))) //For array
+            if (string.IsNullOrWhiteSpace(jsonInput)) { return false;}
+            jsonInput = jsonInput.Trim();
+            if ((jsonInput.StartsWith("{") && jsonInput.EndsWith("}")) || //For object
+                (jsonInput.StartsWith("[") && jsonInput.EndsWith("]"))) //For array
             {
                 try
                 {
-                    JToken.Parse(strInput);
+                    JToken.Parse(jsonInput);
                     return true;
                 }
                 catch (JsonReaderException jex)
@@ -49,7 +71,13 @@ namespace MicroRepoManager
             }
             }
 
-        public static bool IsValidXml(string xmlString)
+        
+        /// <summary>
+        /// Check whether a string is a valid xml
+        /// </summary>
+        /// <param name="xmlString">string to check</param>
+        /// <returns>true if string is valid xml, otherwise false.</returns>
+        private static bool IsValidXml(string xmlString)
         {
             // In here we use try catch because ...
             // "The small overhead from catching an exception drowns compared to parsing the XML."

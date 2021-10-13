@@ -30,6 +30,13 @@ namespace MicroRepoManager.Database
         public abstract string GetObjectContent(string objectId);
         
         /// <summary>
+        /// Get the object type by itemName.
+        /// </summary>
+        /// <param name="objectId">the ID of the object to retrieve.</param>
+        /// <returns>The Item type.</returns>
+        public abstract int GetObjectType(string objectId);
+        
+        /// <summary>
         /// Delete and Object from DB
         /// </summary>
         /// <param name="objectId">The name/id of the item/object to be deleted</param>

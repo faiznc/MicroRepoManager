@@ -9,8 +9,6 @@ using MicroRepoManager.Objects;
 
 namespace MicroRepoManager.Database
 {
-    // todo FUTURE - need downcast to be able properly use a class (string object for example) methods because DB is only saving the BaseObjectClass type
-    
     /// <summary>
     /// Simple DB to accomodate data saving. (Saved on Volatile Memory)
     /// Can be used to provide global data storage and even a mono-database implementation. 
@@ -21,7 +19,7 @@ namespace MicroRepoManager.Database
         /// Local Dict that store all objects.
         /// </summary>
         private static Dictionary<string, BaseObjectClass> _localMemDb = new();
-
+        
         /// <summary>
         /// Add a new object to DB.
         /// </summary>
@@ -41,12 +39,12 @@ namespace MicroRepoManager.Database
         }
         
         /// <summary>
-        /// Safe implementation of AddObject
+        /// Exception-less implementation of AddObject
         /// </summary>
         /// <param name="objectId"> The Item's name</param>
         /// <param name="newObject"> The object instance.</param>
         /// <param name="code">Insertion status.</param>
-        /// <seealso cref="LocalDb.AddObject(string objectID, BaseObjectClass newObject)"/>
+        /// <seealso cref="MemDb.AddObject(string, BaseObjectClass)"/>
         public static void AddObject(string objectId, BaseObjectClass newObject, out DbStatusCodes code)
         {
             if (!CheckKey(objectId)) // if key does not exist, add to DB
@@ -63,17 +61,22 @@ namespace MicroRepoManager.Database
 
         /// <summary>
         /// Get the object instance by itemName.
+        /// <para>(This in an extra function to directly access data objects)</para>
+        /// Common way to get item content is by using <see cref="GetObjectContent(string)"/>
         /// </summary>
         /// <param name="objectId">the ID of the object to retrieve.</param>
         /// <returns>Instance Object.</returns>
         /// <exception cref="ArgumentException">Throw exception whenever objectID is not found in DB.</exception>
-        public static BaseObjectClass GetObject(string objectId)
+        /// <example>To get item content : <see cref="GetObject(string)"/>.<see cref="BaseObjectClass.GetItemContent()"/></example>
+        // Might be better to set it to private (Change abstract class too) in order too maintain encapsulation ?
+        public static BaseObjectClass GetObject(string objectId) 
         {
             switch (CheckKey(objectId))
             {
                 case true:  // return the object
                     return _localMemDb[objectId];
                 case false: // Exception if key not found
+                    // -- Does not implement error code yet. Throwing... --
                     throw new ArgumentException($"ItemName \"{objectId}\" does not exist in DB.");
             }
         }
@@ -83,23 +86,31 @@ namespace MicroRepoManager.Database
         /// </summary>
         /// <param name="objectId">the ID of the object to retrieve.</param>
         /// <returns>The Item Content.</returns>
+        /// <remarks>Another way to get item content is by using <see cref="GetObject(string)"/>.<see cref="BaseObjectClass.GetItemContent()"/></remarks>
+        // Might need to adapt return string with corresponding itemType (if necessary) - #FUTURE
         public static string GetObjectContent(string objectId)
         {
-            switch (CheckKey(objectId))
-            {
-                case true:  // return the object
-                    return _localMemDb[objectId].GetItemContent();
-                case false: // Exception if key not found
-                    throw new ArgumentException($"ItemName \"{objectId}\" does not exist in DB.");
-            }
+            return GetObject(objectId).GetItemContent();
         }
+        
+        /// <summary>
+        /// Get the object's type by itemName.
+        /// </summary>
+        /// <param name="objectId">the ID of the object to retrieve.</param>
+        /// <returns>The Item type.</returns>
+        public static int GetObjectType(string objectId)
+        {
+            return GetObject(objectId).GetItemType();
+        } 
 
         /// <summary>
-        /// Get the object content by itemName.
+        /// Get the object content by itemName. <br></br>
+        /// (An Exception-less implementation of <see cref="GetObjectContent(string)"/> with error codes)
         /// </summary>
         /// <param name="objectId">the ID of the object to retrieve.</param>
         /// <param name="code">Retrieval Status.</param>
         /// <returns>The Item Content.</returns>
+        // (Not optimized, [exception-less] GetObject() not implemented yet))
         public static string GetObjectContent(string objectId, out DbStatusCodes code)
         {
             switch (CheckKey(objectId))
@@ -107,31 +118,26 @@ namespace MicroRepoManager.Database
                 case true:  // return the object
                     code = DbStatusCodes.Ok;
                     return _localMemDb[objectId].GetItemContent();
-                case false: // return null if data not found 
+                case false: // return null if data not found
                     code = DbStatusCodes.KeyNotFoundError;
-                    return null; // careful with implementation (give null coalescing).
+                    return null;
             }
         }
         
-        
         /// <summary>
-        /// Delete and Object from DB
+        /// Delete an Object from DB
         /// </summary>
         /// <param name="objectId">The name/id of the item/object to be deleted</param>
         public static void DeleteObject(string objectId)
         {
-            if (CheckKey(objectId, throwable: true)) // Throw when key is not found.
+            if (CheckKey(objectId, true)) // Throw when key is not found.
             {
                 _localMemDb.Remove(objectId);
             }
-
-#if TESTING
-            Console.WriteLine($"Delete success : {delCheck}");
-#endif
         }
 
         /// <summary>
-        /// Exception-less implementation of <see cref="LocalDb.DeleteObject(string objectID)"/>
+        /// Exception-less implementation of <see cref="MemDb.DeleteObject(string)"/>
         /// </summary>
         /// <param name="objectId">The name/id of the item/object to be deleted</param>
         /// <param name="code">Deletion Status.</param>
@@ -139,17 +145,13 @@ namespace MicroRepoManager.Database
         {
             if (CheckKey(objectId))
             {
-                var delCheck = _localMemDb.Remove(objectId);
+                _localMemDb.Remove(objectId);
                 code = DbStatusCodes.Ok;
             }
             else
             {
                 code = DbStatusCodes.KeyNotFoundError;
             }
-
-#if TESTING
-            Console.WriteLine($"Delete success : {delCheck}");
-#endif
         }
 
         /// <summary>
@@ -162,25 +164,20 @@ namespace MicroRepoManager.Database
         private static bool CheckKey(string objectId, bool throwable = false)
         {
             var isKeyExist = _localMemDb.ContainsKey(objectId);
-            if (!throwable) // If not throwable, return true or false
+            if (!throwable) // If not throwable, just return true or false
             {
                 return isKeyExist;                
             }
-            else // if exception is accepted, throw whenever key is not found
+
+            if (isKeyExist) // If key truly exist, return true
             {
-                return isKeyExist
-                    ? isKeyExist
-                    : throw new ArgumentException($"ItemName \"{objectId}\" does not exist in DB.");
+                return true;
             }
-        }
-        
-        /// <summary>
-        /// Get DB's length.
-        /// </summary>
-        /// <returns>DB's item count</returns>
-        public static int GetDbLength()  // Development purposes.
-        {
-            return _localMemDb.Count;
+            else // Otherwise throw exception (no error code yet, only throw)
+            {
+                throw new ArgumentException($"ItemName \"{objectId}\" does not exist in DB."); // otherwise, throw exception
+            }
+            
         }
     }
 }
