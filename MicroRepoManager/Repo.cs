@@ -8,10 +8,15 @@ using MicroRepoManager.Objects;
 namespace MicroRepoManager
 {
     /// <summary>
-    /// Main class to accomodate repo management
+    /// Main class to accomodate repo management <br></br>
+    /// <para></para>
+    /// This class control a Db object and manage it accordingly.
     /// </summary>
     public class Repo
     {
+        /// <summary>
+        /// Target db object to control.
+        /// </summary>
         private MemDb _dbObject;
         
         public Repo(ref MemDb dbObject)
@@ -37,35 +42,7 @@ namespace MicroRepoManager
         {
             _dbObject = newDbRef;
         }
-        
-        /// <summary>
-        /// Repo's main menu (For Manual Console User Interaction) - Class is NOT IMPLEMENTED YET
-        /// </summary>
-        public static void WelcomeMenu()
-        {
-            string welcomeMessage = "Welcome to the MicroRepoManager !";
-            string optionsMessage = "What to do?\n 1. Insert data \n 2. Get data \n 3. Delete data";
-            string inputMessage = "(1-3) : ";
-            
-            Console.WriteLine(welcomeMessage);
-            Console.WriteLine(optionsMessage);
-            Console.Write(inputMessage);
-            
-            var chosenOptionInt = Console.Read();
-            switch (chosenOptionInt) // ASCII
-            {
-                case 49:
-                    Console.WriteLine("Opsi 1 ( Insert Data chosen )");
-                    break;
-                case 50:
-                    Console.WriteLine("Opsi 2 ( Get Data )");
-                    break;
-                case 51:
-                    Console.WriteLine("Opsi 3 ( Delete Data)");
-                    break;
-            }
-        }
-        
+
         /// <summary>
         /// Register a new object to the repo.
         /// </summary>
@@ -110,8 +87,6 @@ namespace MicroRepoManager
                 return; 
             }
             
-            // NEW IDEA >>> dynamic code instead of switch, using previous enum to get item type
-            // still NO IDEA on how to efficiently code this section, but for now *KISS* principle
             switch (inputDataType)
             {
                 case ItemTypes.Json:

@@ -45,6 +45,9 @@ namespace MicroRepoManager.Database
         /// <summary>
         /// Check whether an itemName (or objectID) is present in DB or not
         /// </summary>
+        /// <param name="objectId">The Object id or Key to search</param>
+        /// <param name="throwable">If true, will throw if key not found. If false, only return true or false.</param>
+        /// <returns>Object existence in database.</returns>
         public abstract bool CheckKey(string objectId, bool throwable = false);
 
     }
